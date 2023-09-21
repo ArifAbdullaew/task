@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPG SERVIC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+    <style>
+        .function-container {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .function-header {
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .function-body {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Python Code Documentation</h1>
+
+    <div class="function-container">
+        <div class="function-header">get_ppg_data</div>
+        <div class="function-body">
+            <p>Функция для получения данных PPG по заданному id</p>
+            <pre><code class="python">def get_ppg_data(ppg_id):  # Формируем URL для GET-запроса с заданным id
+    url = f"https://api.ec-leasing.ru/escmd_api_vkr2023/getppg/{ppg_id}"
+    response = requests.get(url)  # Выполняем GET-запрос к серверу
+    return response.json()  # Возвращаем результат запроса в формате JSON</code></pre>
+        </div>
+    </div>
+
+    <div class="function-container">
+        <div class="function-header">process_ppg_data</div>
+        <div class="function-body">
+            <p>Функция для обработки данных PPG</p>
+            <pre><code class="python">def process_ppg_data(ppg_data):
+    result = len(ppg_data)  # Вычисляем длину массива ppg_data
+    return result, ppg_data  # Возвращаем результат вычисления</code></pre>
+        </div>
+    </div>
+
+    <div class="function-container">
+        <div class="function-header">send_results</div>
+        <div class="function-body">
+            <p>Функция для отправки результатов на сервер</p>
+            <pre><code class="python">def send_results(ppg_id, result):
+    url = f"https://api.ec-leasing.ru/escmd_api_vkr2023/postresults/{ppg_id}"  # Формируем URL для POST-запроса с заданным id
+    json_data = {"result": result}  # Подготавливаем JSON с результатами и id
+    response = requests.post(url, json=json_data)  # Выполняем POST-запрос к серверу с данными
+    return response.json()  # Возвращаем результат запроса в формате JSON</code></pre>
+        </div>
+    </div>
+
+    <div class="function-container">
+        <div class="function-header">main</div>
+        <div class="function-body">
+            <p>Основная функция, запускающая бесконечный цикл</p>
+            <pre><code class="python">def main():
+    ppg_id = 100  # Задаем начальное значение PPG
+    try:
+        while True:  # Запускаем бесконечный цикл
+            ppg_data = get_ppg_data(ppg_id)  # Получаем данные PPG с заданным id
+            print(f"Received PPG data with id {ppg_id}")
+
+            result, ppg_data = process_ppg_data(ppg_data)  # Обрабатываем данные PPG
+            print(f"Processed PPG data. Result (Length): {result}")
+
+            response = send_results(ppg_id, result)  # Отправляем результаты на сервер
+            print(f"Sent results to server. Server response: {response}")
+
+            ppg_id += 1 # Увеличиваем id PPG для следующей итерации
+            time.sleep(15) # Приостанавливаем выполнение программы на 15 секунд
+
+    except KeyboardInterrupt:
+        print("Program manually interrupted. Exiting...")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.function-header').forEach((functionHeader) => {
+                functionHeader.addEventListener('click', (event) => {
+                    const functionBody = event.target.nextElementSibling;
+                    if (functionBody.style.display === '' || functionBody.style.display === 'none') {
+                        functionBody.style.display = 'block';
+                    } else {
+                        functionBody.style.display = 'none';
+                    }
+                });
+            });
+            hljs.highlightAll();
+        });
+    </script>
+</body>
+</html>
