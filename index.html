@@ -44,8 +44,8 @@
         <div class="function-body">
             <p>Функция для обработки данных PPG</p>
             <pre><code class="python">def process_ppg_data(ppg_data):
-    result = len(ppg_data)  # Вычисляем длину массива ppg_data
-    return result, ppg_data  # Возвращаем результат вычисления</code></pre>
+    ppg_points = ppg_data[0]['data']  # Извлекаем список значений PPG из словаря
+    result = len(ppg_points)  # Вычисляем длину списка точек</code></pre>
         </div>
     </div>
 
